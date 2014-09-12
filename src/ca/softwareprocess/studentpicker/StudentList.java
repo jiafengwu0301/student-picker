@@ -23,4 +23,9 @@ public class StudentList {
 		studentList.remove(testStudent);		
 	}
 
+	public Student chooseStudent() {
+		int index = (int) (studentList.size() * Math.random());
+		return studentList.get(index);
+	}
+
 }
