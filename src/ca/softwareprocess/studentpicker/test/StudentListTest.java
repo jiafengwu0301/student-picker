@@ -2,6 +2,7 @@ package ca.softwareprocess.studentpicker.test;
 
 import java.util.Collection;
 
+import ca.softwareprocess.studentpicker.EmptyStudentListException;
 import ca.softwareprocess.studentpicker.Student;
 import ca.softwareprocess.studentpicker.StudentList;
 
@@ -10,10 +11,17 @@ import junit.framework.TestCase;
 public class StudentListTest extends TestCase {
 	public void testEmptyStudentList() {
 		StudentList studentList = new StudentList();
-		Collection<Student> students = studentList.getStudents();
-		assertTrue("Empty Student List", students.size() == 0);
+		assertTrue("Empty Student List", studentList.size() == 0);
 	}
 	public void testAddStudentList() {
+		StudentList studentList = new StudentList();
+		String studentName = "A Student";
+		Student testStudent = new Student(studentName);
+		studentList.addStudent(testStudent);			
+		assertTrue("Student List Size", studentList.size() == 1);
+		assertTrue("Test Student Not Contained",studentList.contains(testStudent));		
+	}
+	public void testGetStudents() {
 		StudentList studentList = new StudentList();
 		String studentName = "A Student";
 		Student testStudent = new Student(studentName);
@@ -22,21 +30,21 @@ public class StudentListTest extends TestCase {
 		assertTrue("Student List Size", students.size() == 1);
 		assertTrue("Test Student Not Contained",students.contains(testStudent));		
 	}
+
 	public void testRemoveStudent() {
 		StudentList studentList = new StudentList();
 		String studentName = "A Student";
 		Student testStudent = new Student(studentName);
-		studentList.addStudent(testStudent);
-		Collection<Student> students = studentList.getStudents();		
-		assertTrue("Student List Size Isn't Big Enough", students.size() == 1);
-		assertTrue("",students.contains(testStudent));
-		studentList.removeStudent(testStudent);
-		students = studentList.getStudents();		
-		assertTrue("Student List Size Isn't Small Enough", students.size() == 0);
-		assertFalse("Test Student Still Contained?",students.contains(testStudent));		
+		studentList.addStudent(testStudent);		
+		assertTrue("Student List Size Isn't Big Enough", studentList.size() == 1);
+		assertTrue("",studentList.contains(testStudent));
+		studentList.removeStudent(testStudent);		
+		assertTrue("Student List Size Isn't Small Enough", studentList.size() == 0);
+		assertFalse("Test Student Still Contained?",studentList.contains(testStudent));		
 		
 	}
 	public void testChooseStudentList() {
+		try {
 		StudentList studentList = new StudentList();
 		String studentName = "A Student";
 		Student testStudent = new Student(studentName);
@@ -60,8 +68,21 @@ public class StudentListTest extends TestCase {
 			}
 			assertTrue("Too Many iterations", maxcount > 0);
 		}
+		} catch (EmptyStudentListException e) {
+			assertTrue("EmptyStudentListException was thrown!"+e, false);			
+		}
 	}
-
+	public void testChooseEmptyStudentList() {
+		StudentList studentList = new StudentList();
+		try {
+			Student s = studentList.chooseStudent();
+			assertFalse("We shouldn't reach here",s==null);
+			assertTrue("We shouldn't reach here",false);
+		} catch (EmptyStudentListException e) {
+			assertTrue("We should reach here",true);
+		}
+		
+	}
 	
 	
 }
