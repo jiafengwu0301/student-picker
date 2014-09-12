@@ -3,6 +3,9 @@ package ca.softwareprocess.studentpicker;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class BulkImportActivity extends Activity {
 
@@ -19,4 +22,13 @@ public class BulkImportActivity extends Activity {
 		return true;
 	}
 
+	public void addStudentsAction(View v) {
+		EditText view = (EditText) findViewById(R.id.bulkStudentText);
+		String text = view.getText().toString();
+		StudentListController st = new StudentListController();
+		st.bulkImport(text);
+		view.setText("");
+		Toast.makeText(this, "Thanks for the students!", Toast.LENGTH_SHORT).show();
+	}
+	
 }

@@ -22,6 +22,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -49,6 +51,18 @@ public class MainActivity extends Activity {
 		Toast.makeText(this, "Bulk Import", Toast.LENGTH_SHORT).show();
 		Intent intent = new Intent(MainActivity.this, BulkImportActivity.class);
 		startActivity(intent);
+	}
+	
+	public void chooseAStudent(View v) {		
+		Toast.makeText(this, "Choose A Student", Toast.LENGTH_SHORT).show();
+		StudentListController st = new StudentListController();
+		try {
+			Student s = st.chooseStudent();
+			TextView view = (TextView) findViewById( R.id.chosenStudentTextView );
+			view.setText(s.getName());
+		} catch (EmptyStudentListException e) {
+			Toast.makeText(this, "There are no students!", Toast.LENGTH_SHORT).show();
+		}		
 	}
 
 }
