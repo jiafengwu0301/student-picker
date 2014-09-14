@@ -6,9 +6,11 @@ import java.util.Collection;
 public class StudentList {
 	
 	protected ArrayList<Student> studentList;
+	protected ArrayList<Listener> listeners;
 	
 	public StudentList() {
 		studentList = new ArrayList<Student>();		
+		listeners = new ArrayList<Listener>();
 	}
 	
 	public Collection<Student> getStudents() {
@@ -17,10 +19,18 @@ public class StudentList {
 
 	public void addStudent(Student testStudent) {
 		studentList.add(testStudent);
+		notifyListeners();
+	}
+
+	private void notifyListeners() {
+		for (Listener  listener : listeners) {
+			listener.update();
+		}
 	}
 
 	public void removeStudent(Student testStudent) {
-		studentList.remove(testStudent);		
+		studentList.remove(testStudent);
+		notifyListeners();
 	}
 
 	public Student chooseStudent() throws EmptyStudentListException {
@@ -40,4 +50,12 @@ public class StudentList {
 		return studentList.contains(testStudent);
 	}
 
+	public void addListener(Listener l) {
+		listeners.add(l);
+	}
+
+	public void removeListener(Listener l) {
+		listeners.remove(l);
+	}
+	
 }

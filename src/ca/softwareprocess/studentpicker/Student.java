@@ -11,4 +11,8 @@ public class Student {
 		return this.studentName;
 	}
 	
+	public String toString() {
+		return getName();
+	}
+	
 }
