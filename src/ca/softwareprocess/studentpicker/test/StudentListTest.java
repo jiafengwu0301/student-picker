@@ -3,6 +3,7 @@ package ca.softwareprocess.studentpicker.test;
 import java.util.Collection;
 
 import ca.softwareprocess.studentpicker.EmptyStudentListException;
+import ca.softwareprocess.studentpicker.Listener;
 import ca.softwareprocess.studentpicker.Student;
 import ca.softwareprocess.studentpicker.StudentList;
 
@@ -84,5 +85,36 @@ public class StudentListTest extends TestCase {
 		
 	}
 	
+	boolean updated = false;
+	public void testNotifyListeners() {
+		StudentList studentList = new StudentList();
+		updated = false;
+		Listener l = new Listener() {			
+			public void update() {
+				StudentListTest.this.updated = true;
+			}
+		};
+		studentList.addListener(l);
+		Student testStudent = new Student("Newbie");
+		studentList.addStudent(testStudent);
+		assertTrue("StudentList didn't fire an update off", this.updated);
+		updated = false;
+		studentList.removeStudent(testStudent);
+		assertTrue("Removing a student from the StudentList didn't fire an update off", this.updated);
+	}
+	public void testRemoveListeners() {
+		StudentList studentList = new StudentList();
+		updated = false;
+		Listener l = new Listener() {			
+			public void update() {
+				StudentListTest.this.updated = true;
+			}
+		};
+		studentList.addListener(l);
+		studentList.removeListener(l);
+		studentList.addStudent(new Student("Newbie"));
+		assertFalse("StudentList didn't fire an update off", this.updated);
+	}
+
 	
 }
