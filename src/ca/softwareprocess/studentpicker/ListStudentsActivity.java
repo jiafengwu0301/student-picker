@@ -5,6 +5,9 @@ import java.util.Collection;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,6 +23,9 @@ public class ListStudentsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.list_students);
+		
+		StudentListManager.initManager(this.getApplicationContext());
+		
 		ListView listView = (ListView) findViewById(R.id.studentListView);
 		Collection<Student> students = StudentListController.getStudentList().getStudents();
 		final ArrayList<Student> list = new ArrayList<Student>(students);
@@ -41,11 +47,24 @@ public class ListStudentsActivity extends Activity {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> adapterView, View view,
 					int position, long id) {
-				Toast.makeText(ListStudentsActivity.this,
-						"Delete "+list.get(position).toString(),
-						Toast.LENGTH_SHORT).show();
-				Student student = list.get(position);				
-				StudentListController.getStudentList().removeStudent(student);
+				AlertDialog.Builder adb = new AlertDialog.Builder(ListStudentsActivity.this);
+				adb.setMessage("Delete "+list.get(position).toString()+"?");
+				adb.setCancelable(true);
+				final int finalPosition = position;
+				adb.setPositiveButton("Delete", new OnClickListener(){
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Student student = list.get(finalPosition);				
+						StudentListController.getStudentList().removeStudent(student);												
+					}										
+				});
+				adb.setNegativeButton("Cancel", new OnClickListener() {					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				});
+				//Toast.makeText(ListStudentsActivity.this, "Is the on click working?", Toast.LENGTH_SHORT).show();
+				adb.show();
 				return false;
 			}			
 		});

@@ -1,14 +1,43 @@
 package ca.softwareprocess.studentpicker;
 
+import java.io.IOException;
+
 public class StudentListController {
 	
 	// Lazy Singleton 
 	private static StudentList studentList = null;
+	// Warning: throws a runTimeException
 	static public StudentList getStudentList() {
 		if (studentList == null) {
-			studentList = new StudentList();
+			try {
+				studentList = StudentListManager.getManager().loadStudentList();
+				studentList.addListener(new Listener() {					
+					@Override
+					public void update() {
+						saveStudentList();
+					}
+				});
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				throw new RuntimeException("Could not deserialize StudentList from StudentListManager");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				throw new RuntimeException("Could not deserialize StudentList from StudentListManager");
+			}
 		}
 		return studentList;			
+	}
+	
+	static public void saveStudentList() {
+		try {
+			StudentListManager.getManager().saveStudentList(getStudentList());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RuntimeException("Could not deserialize StudentList from StudentListManager");
+		}		
 	}
 	
 	public Student chooseStudent() throws EmptyStudentListException {

@@ -1,16 +1,29 @@
 package ca.softwareprocess.studentpicker;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class StudentList {
+public class StudentList implements Serializable {
 	
-	protected ArrayList<Student> studentList;
-	protected ArrayList<Listener> listeners;
+	/**
+	 * StudentList serialization ID
+	 */
+	private static final long serialVersionUID = 6673446047991058932L;
+	protected ArrayList<Student> studentList = null;
+	protected transient ArrayList<Listener> listeners = null;
 	
 	public StudentList() {
 		studentList = new ArrayList<Student>();		
 		listeners = new ArrayList<Listener>();
+	}
+	
+	private ArrayList<Listener> getListeners() {
+		if (listeners == null ) {
+			listeners = new ArrayList<Listener>();
+		}
+		return listeners;
 	}
 	
 	public Collection<Student> getStudents() {
@@ -23,11 +36,11 @@ public class StudentList {
 	}
 
 	private void notifyListeners() {
-		for (Listener  listener : listeners) {
+		for (Listener  listener : getListeners()) {
 			listener.update();
 		}
 	}
-
+	
 	public void removeStudent(Student testStudent) {
 		studentList.remove(testStudent);
 		notifyListeners();
@@ -51,11 +64,11 @@ public class StudentList {
 	}
 
 	public void addListener(Listener l) {
-		listeners.add(l);
+		getListeners().add(l);
 	}
 
 	public void removeListener(Listener l) {
-		listeners.remove(l);
+		getListeners().remove(l);
 	}
 	
 }

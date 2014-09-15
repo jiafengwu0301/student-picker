@@ -13,6 +13,7 @@ public class BulkImportActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bulk_student_import);
+		StudentListManager.initManager(this.getApplicationContext());
 	}
 
 	@Override
