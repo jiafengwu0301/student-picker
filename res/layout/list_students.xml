@@ -9,6 +9,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_below="@+id/studentListView"
+        android:layout_toRightOf="@+id/addStudentNameText"
         android:onClick="addStudentAction"
         android:text="Add" />
 
@@ -18,7 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@+id/addStudentButton"
         android:ems="10"
         android:inputType="textPersonName" >
 
@@ -29,7 +30,7 @@
         android:id="@+id/studentListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/addStudentButton"
+        android:layout_above="@+id/addStudentNameText"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true" >
